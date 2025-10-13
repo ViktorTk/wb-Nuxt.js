@@ -164,93 +164,47 @@
       </div>
       <!-- /.col-9 -->
       <div class="col-3 d-flex justify-content-end">
-        <a href="#" class="more">View All</a>
+        <NuxtLink
+          :to="{ path: '/products', query: { field: 'label', name: 'New' } }"
+          class="more"
+        >
+          View All
+        </NuxtLink>
       </div>
       <!-- /.col-3 -->
     </div>
     <!-- /.row -->
     <div class="short-goods row">
-      <div class="col-lg-3 col-sm-6">
+      <div
+        class="col-lg-3 col-sm-6"
+        v-for="card in data
+          .filter((c) => c.label.toLowerCase() === 'new')
+          .splice(0, 4)"
+        :key="card.id"
+      >
         <div class="goods-card">
-          <span class="label">New</span>
+          <span class="label">{{ card.label.toUpperCase() }}</span>
           <!-- /.label --><img
-            src="/images/image-119.jpg"
+            :src="card.img"
             alt="image: Hoodie"
             class="goods-image"
           />
-          <h3 class="goods-title">Embroidered Hoodie</h3>
+          <h3 class="goods-title">{{ card.name }}</h3>
           <!-- /.goods-title -->
-          <p class="goods-description">Yellow/Lilac/Fuchsia/Orange</p>
+          <p class="goods-description">{{ card.description }}</p>
           <!-- /.goods-description -->
           <!-- /.goods-price -->
-          <button class="button goods-card-btn add-to-cart" data-id="012">
-            <span class="button-price">$89</span>
+          <button class="button goods-card-btn add-to-cart" :data-id="card.id">
+            <span class="button-price">${{ card.price }}</span>
           </button>
         </div>
         <!-- /.goods-card -->
       </div>
-      <!-- /.col-3 -->
-      <div class="col-lg-3 col-sm-6">
-        <div class="goods-card">
-          <span class="label">New</span>
-          <!-- /.label --><img
-            src="/images/image-120.jpg"
-            alt="image: Faded Beach Trousers"
-            class="goods-image"
-          />
-          <h3 class="goods-title">Faded Beach Trousers</h3>
-          <!-- /.goods-title -->
-          <p class="goods-description">Navy/Ochre/Black/Khaki</p>
-          <!-- /.goods-description -->
-          <button class="button goods-card-btn add-to-cart" data-id="011">
-            <span class="button-price">$139</span>
-          </button>
-          <!-- /.goods-price -->
-        </div>
-        <!-- /.goods-card -->
-      </div>
-      <!-- /.col-3 -->
-      <div class="col-lg-3 col-sm-6">
-        <div class="goods-card">
-          <span class="label">New</span>
-          <!-- /.label --><img
-            src="/images/image-121.jpg"
-            alt="image: Text T-Shirt"
-            class="goods-image"
-          />
-          <h3 class="goods-title">Text T-Shirt</h3>
-          <!-- /.goods-title -->
-          <p class="goods-description">White</p>
-          <!-- /.goods-description -->
-          <button class="button goods-card-btn add-to-cart" data-id="010">
-            <span class="button-price">$59</span>
-          </button>
-          <!-- /.goods-price -->
-        </div>
-        <!-- /.goods-card -->
-      </div>
-      <!-- /.col-3 -->
-      <div class="col-lg-3 col-sm-6">
-        <div class="goods-card">
-          <span class="label">New</span>
-          <!-- /.label --><img
-            src="/images/image-122.jpg"
-            alt="image: Striped Long Sleeve Shirt"
-            class="goods-image"
-          />
-          <h3 class="goods-title">Striped Long Sleeve Shirt</h3>
-          <!-- /.goods-title -->
-          <p class="goods-description">Red/Sky Blue</p>
-          <!-- /.goods-description -->
-          <button class="button goods-card-btn add-to-cart" data-id="001">
-            <span class="button-price">$119</span>
-          </button>
-          <!-- /.goods-price -->
-        </div>
-        <!-- /.goods-card -->
-      </div>
-      <!-- /.col-3 -->
     </div>
     <!-- /.row -->
   </section>
 </template>
+
+<script setup>
+const { data } = await useFetch('api/new-products')
+</script>
