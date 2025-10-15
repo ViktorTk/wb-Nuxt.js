@@ -183,7 +183,7 @@
         :key="card.id"
       >
         <div class="goods-card">
-          <span class="label">{{ card.label.toUpperCase() }}</span>
+          <span class="label">{{ titleFormat(card.label) }}</span>
           <!-- /.label --><img
             :src="card.img"
             alt="image: Hoodie"
@@ -194,7 +194,10 @@
           <p class="goods-description">{{ card.description }}</p>
           <!-- /.goods-description -->
           <!-- /.goods-price -->
-          <button class="button goods-card-btn add-to-cart" :data-id="card.id">
+          <button
+            class="button goods-card-btn add-to-cart"
+            @click="addToCart(card)"
+          >
             <span class="button-price">${{ card.price }}</span>
           </button>
         </div>
@@ -205,6 +208,26 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { CartItem } from '~/models/cart-item.models'
+import type { Product } from '~/models/products.models'
+
 const { data } = await useFetch('api/new-products')
+
+const cartItems = useCart()
+
+const addToCart = (product: Product) => {
+  const findItem = cartItems.value.find((c) => c.id === product.id)
+  if (findItem) {
+    findItem.count++
+  } else {
+    const newCartItem: CartItem = {
+      id: product.id,
+      name: product.name,
+      price: parseInt(product.price),
+      count: 1,
+    }
+    cartItems.value.push(newCartItem)
+  }
+}
 </script>
